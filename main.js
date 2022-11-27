@@ -5,6 +5,7 @@ const comprarEntrada = () => {
     let cantidadEntradas = 0;
     let tituloPelicula = '';
     let fechaCompleta = '';
+    let precioParcial = 0;
     let precioTotal = 0;
 
     idPelicula=validarPelicula();
@@ -28,17 +29,19 @@ const comprarEntrada = () => {
             break;
     }
 
+    fechaCompleta = seleccionarFecha();
     tipoEntrada=validarTipoEntrada();
     cantidadEntradas=validarCantEntradas(tipoEntrada);
-    precioTotal=calcularPrecio(cantidadEntradas,tipoEntrada);
-    fechaCompleta = seleccionarFecha();
+    precioParcial=calcularPrecio(cantidadEntradas,tipoEntrada);
+    precioTotal = verificarDescuento (fechaCompleta,precioParcial);
+
     mostrarDetallesCompra(tituloPelicula,tipoEntrada,fechaCompleta,cantidadEntradas,precioTotal);
 };
 
 const validarPelicula = () => {
     let seleccionPelicula =0;
 
-    while(!seleccionPelicula || seleccionPelicula === 0 || seleccionPelicula > 4) {
+    while(!seleccionPelicula || seleccionPelicula <= 0 || seleccionPelicula > 4) {
         seleccionPelicula = parseInt(prompt("¿Qué pelicula desea ver?:\n1: One Piece Film Red\n2: Crepúsculo la saga: Eclipse\n3: Harry Potter y la cámara secreta\n4: Pantera Negra: Wakanda por siempre"));
     }
 
@@ -69,9 +72,9 @@ const validarCantEntradas = (tipo) => {
         }
 
         if (Number.isNaN(cantidad) || cantidad <= 0) {
-            alert('Debe ingresar una cantidad válida.')
+            alert('Debe ingresar una cantidad válida.');
         }
-    }while (Number.isNaN(cantidad) || cantidad <= 0)
+    }while (Number.isNaN(cantidad) || cantidad <= 0);
 
     return cantidad;
 };
@@ -97,7 +100,7 @@ const seleccionarFecha = () => {
 
         if (fecha === 'LUNES' || fecha === 'MARTES' || fecha === 'MIERCOLES' || fecha === 'JUEVES' || fecha === 'VIERNES' || fecha === 'SABADO' || fecha === 'DOMINGO'){
             while(!horario || horario <= 0) {
-                horario = parseInt(prompt('Por favor, ingrese un horario:\n1. 16:00 hs\n2. 19:20 hs\n3. 22:40 hs'));
+                horario = parseInt(prompt('Por favor, seleccione un horario:\n1. 16:00 hs\n2. 19:20 hs\n3. 22:40 hs'));
                 
                 switch (horario) {
                     case 1:
@@ -113,7 +116,7 @@ const seleccionarFecha = () => {
                         return (fecha);
                     
                     default:
-                        alert('Debe ingresar un horario válido.');
+                        alert('Debe seleccionar un horario válido.');
                         horario = 0;
                 }
             }
@@ -125,11 +128,40 @@ const seleccionarFecha = () => {
 
 const mostrarDetallesCompra = (titulo,tipo,fecha,cantidad,precio) => {
     if (tipo === 1) {
-        alert('DATOS DE LA COMPRA\n=============================\nPelicula: ' + titulo + '\nCantidad de Entradas: ' + cantidad + '\nTipo de asiento: Estandar\nFecha: ' + fecha + '\nImporte: $' + precio);
+        alert('DATOS DE LA COMPRA\n==============================\nPelicula: ' + titulo + '\nCantidad de Entradas: ' + cantidad + '\nTipo de asiento: Estandar\nFecha: ' + fecha + '\nImporte: $' + precio);
     } else {
-        alert('DATOS DE LA COMPRA\n=============================\nPelicula: ' + titulo + '\nCantidad de Entradas: ' + cantidad + '\nTipo de asiento: SuperSeat\nFecha: ' + fecha + '\nImporte: $' + precio);
+        alert('DATOS DE LA COMPRA\n==============================\nPelicula: ' + titulo + '\nCantidad de Entradas: ' + cantidad + '\nTipo de asiento: SuperSeat\nFecha: ' + fecha + '\nImporte: $' + precio);
     }
 };
 
+
+const verificarDescuento = (fecha,precio) => {
+    let fechaFix = '';
+    let precioDescuento = 0;
+    let codigoDescuento = '';
+
+    fechaFix = fecha.split('.');
+    console.log(fechaFix)
+
+    if (fechaFix[0] === 'LUNES' || fechaFix[0] === 'MIERCOLES' || fechaFix[0] === 'VIERNES'){
+        alert('Usted ha seleccionado una fecha con descuento.\nSe aplicara un 15% de descuento.');
+        precioDescuento = precio * 0.85;
+    }
+
+    codigoDescuento = prompt("Ingrese un codigo de descuento, si no tiene uno por continue sin ingresar nada").toUpperCase();
+    codigoDescuento = codigoDescuento.trim();
+
+    if (codigoDescuento === 'CODER'){
+        if (precioDescuento === 0){
+            alert('Se ha ingresado el codigo de descuento ' + codigoDescuento + '\nSe aplicara un 50% de descuento.');
+            precioDescuento = precio*0.50;
+        } else {
+        alert('Se ha ingresado el codigo de descuento ' + codigoDescuento + '\nSe aplicara un 50% de descuento.');
+        precioDescuento = precioDescuento*0.50;
+        }
+    }
+
+    return(precioDescuento);    
+};
 
 comprarEntrada();
