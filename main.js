@@ -1,5 +1,6 @@
 
 const comprarEntrada = () => {
+    //Variables
     let idPelicula = 0;
     let tipoEntrada = 0;
     let cantidadEntradas = 0;
@@ -29,17 +30,17 @@ const comprarEntrada = () => {
             break;
     }
 
-    fechaCompleta = seleccionarFecha();
-    tipoEntrada=validarTipoEntrada();
-    cantidadEntradas=validarCantEntradas(tipoEntrada);
-    precioParcial=calcularPrecio(cantidadEntradas,tipoEntrada);
-    precioTotal = verificarDescuento (fechaCompleta,precioParcial);
+    fechaCompleta = seleccionarFecha(); //Funcion para obtener fecha y horario de funcion
+    tipoEntrada = validarTipoEntrada(); //Funcion para validad el tipo de asiento
+    cantidadEntradas = validarCantEntradas(tipoEntrada); //Funcion para obtener cantidad de entradas
+    precioParcial = calcularPrecio(cantidadEntradas,tipoEntrada); //Funcion para calcular precio de entradas
+    precioTotal = verificarDescuento (fechaCompleta,precioParcial); //Funcion para verificar opciones de descuento
 
-    mostrarDetallesCompra(tituloPelicula,tipoEntrada,fechaCompleta,cantidadEntradas,precioTotal);
+    mostrarDetallesCompra(tituloPelicula,tipoEntrada,fechaCompleta,cantidadEntradas,precioTotal); //Funcion para mostrar todos los datos de la compra
 };
 
 const validarPelicula = () => {
-    let seleccionPelicula =0;
+    let seleccionPelicula = 0;
 
     while(!seleccionPelicula || seleccionPelicula <= 0 || seleccionPelicula > 4) {
         seleccionPelicula = parseInt(prompt("¿Qué pelicula desea ver?:\n1: One Piece Film Red\n2: Crepúsculo la saga: Eclipse\n3: Harry Potter y la cámara secreta\n4: Pantera Negra: Wakanda por siempre"));
@@ -49,7 +50,7 @@ const validarPelicula = () => {
 };
 
 const validarTipoEntrada = () => {
-    let seleccion=0;
+    let seleccion = 0;
 
     do{
         seleccion = parseInt(prompt('¿Que tipo de asciento desea?\n1: Estandar\n2: SuperSeat'));
@@ -62,7 +63,7 @@ const validarTipoEntrada = () => {
 };
 
 const validarCantEntradas = (tipo) => {
-    let cantidad=0;
+    let cantidad = 0;
 
     do{
         if (tipo===1) {
@@ -80,19 +81,19 @@ const validarCantEntradas = (tipo) => {
 };
 
 const calcularPrecio = (cantidad,tipo) => {
-    let resultado=0;
+    let resultado = 0;
 
     if(tipo===1){
-        resultado=cantidad*800;
+        resultado = cantidad*800;
     } else{
-        resultado=cantidad*1000;
+        resultado = cantidad*1000;
     }
 
     return(resultado);
 };
 
 const seleccionarFecha = () => {
-    let fecha ='';
+    let fecha = '';
     let horario = 0;
     
     while (fecha === '' || horario === 0) {
@@ -141,27 +142,26 @@ const verificarDescuento = (fecha,precio) => {
     let codigoDescuento = '';
 
     fechaFix = fecha.split('.');
-    console.log(fechaFix)
 
     if (fechaFix[0] === 'LUNES' || fechaFix[0] === 'MIERCOLES' || fechaFix[0] === 'VIERNES'){
         alert('Usted ha seleccionado una fecha con descuento.\nSe aplicara un 15% de descuento.');
         precioDescuento = precio * 0.85;
     }
 
-    codigoDescuento = prompt("Ingrese un codigo de descuento, si no tiene uno por continue sin ingresar nada").toUpperCase();
+    codigoDescuento = prompt("Ingrese un codigo de descuento.\nSi no tiene uno, deje en sin completar esta opcion").toUpperCase();
     codigoDescuento = codigoDescuento.trim();
 
     if (codigoDescuento === 'CODER'){
         if (precioDescuento === 0){
             alert('Se ha ingresado el codigo de descuento ' + codigoDescuento + '\nSe aplicara un 50% de descuento.');
-            precioDescuento = precio*0.50;
+            precioDescuento = precio * 0.50;
         } else {
         alert('Se ha ingresado el codigo de descuento ' + codigoDescuento + '\nSe aplicara un 50% de descuento.');
-        precioDescuento = precioDescuento*0.50;
+        precioDescuento = precioDescuento * 0.50;
         }
     }
 
-    return(precioDescuento);    
+    return(precioDescuento);
 };
 
 comprarEntrada();
